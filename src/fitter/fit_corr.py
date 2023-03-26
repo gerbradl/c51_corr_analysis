@@ -116,6 +116,8 @@ def main():
         states = args.states
     else:
         states = fp.fit_states
+    
+    print(data_cfg.keys())
 
     # prepare x, y, priors
     x, y, priors = ld.prepare_xyp(states, fp, gv_data)

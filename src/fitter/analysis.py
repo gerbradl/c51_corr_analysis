@@ -168,16 +168,20 @@ def run_bootstrap(args, fit, fp, data_cfg, x_fit, svdcut=None):
 
             bs_data = dict()
             for k in fit.y:
-                bs_data[k] = data_cfg[k][bs_list[bs]]
+                if 'mres' not in k:
+                    bs_data[k] = data_cfg[k][bs_list[bs]]
+                else:
+                    mres = k.split('_')[0]
+                    bs_data[mres] = data_cfg[mres+'_MP'] / data_cfg[mres+'_PP']
             bs_gv = gv.dataset.avg_data(bs_data)
 
-            if any(['mres' in k for k in bs_gv]):
-                bs_tmp = {k:v for (k,v) in bs_gv.items() if 'mres' not in k}
-                for k in [key for key in bs_gv if 'mres' in key]:
-                    mres = k.split('_')[0]
-                    if mres not in bs_tmp:
-                        bs_tmp[mres] = bs_gv[mres+'_MP'] / bs_gv[mres+'_PP']
-                bs_gv = bs_tmp
+            # if any(['mres' in k for k in bs_gv]):
+            #     bs_tmp = {k:v for (k,v) in bs_gv.items() if 'mres' not in k}
+            #     for k in [key for key in bs_gv if 'mres' in key]:
+            #         mres = k.split('_')[0]
+            #         if mres not in bs_tmp:
+            #             bs_tmp[mres] = bs_gv[mres] / bs_gv[mres]
+            #     bs_gv = bs_tmp
 
             y_bs = {k: v[x_fit[k]['t_range']]
                     for (k, v) in bs_gv.items() if k in fit.y}
