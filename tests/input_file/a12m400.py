@@ -9,7 +9,7 @@ Created on Tue Feb  7 22:50:46 2023
 import gvar as gv
 import numpy as np
 
-data_file = 'c51_2pt_octet_decuplet.h5'
+data_file = '../data/c51_2pt_octet_decuplet.h5'
 
 fit_states = ['omega','pion','kaon','mres-L','mres-S']
 
@@ -42,14 +42,6 @@ corr_lst = {
         # optimal fit params
         'n_state'   :2,
         't_range'   :np.arange(5,33),
-    },
-    'delta':{
-        'dsets'     :['a12m400/delta_pp'],
-        'xlim'      :[0,64.5],
-        'ylim'      :[0.14,0.2],
-        # optimal fit params
-        'n_state'   :3,
-        't_range'   :np.arange(5,64),
     },
     'mres-L':{
         'corr_array':False,
