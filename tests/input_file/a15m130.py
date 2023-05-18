@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Feb 12 15:56:11 2023
+Created on Thu Feb  9 21:58:56 2023
 
 @author: zhaiy
 """
@@ -13,55 +13,58 @@ data_file = '../data/c51_2pt_octet_decuplet.h5'
 
 fit_states = ['omega','pion','kaon','mres-L','mres-S']
 
-bs_seed = 'a15m310L_o'
-plot_name = 'a15m310L_o'
+bs_seed = 'a15m130'
+plot_name = 'a15m130'
 
 #give proton, lambda, sigma, xi the same t_range
 
 corr_lst = {
     'omega':{
-        'dsets'     :['a15m310L_o/omega_m'],
+        'dsets'     :['a15m130/omega_m'],
         'xlim'      :[4,30],
-        'ylim'      :[1.15,1.35],
+        'ylim'      :[1.1,1.35],
         # optimal fit params
         'n_state'   :2,
-        't_range'   :np.arange(6,16),
+        't_range'   :np.arange(6,15),
     },
     'pion':{
-        'dsets'     :['a15m310L_o/piplus'],
+        'dsets'     :['a15m130/piplus'],
         'xlim'      :[3,40],
-        'ylim'      :[0.225,0.25],
+        'ylim'      :[0.075,0.15],
         # optimal fit params
         'n_state'   :2,
-        't_range'   :np.arange(4,25),
+        't_range'   :np.arange(13,25),
     },
     'kaon':{
-        'dsets'     :['a15m310L_o/kplus'],
+        'dsets'     :['a15m130/kplus'],
         'xlim'      :[5,40],
-        'ylim'      :[0.4,0.41],
+        'ylim'      :[0.367,0.387],
         # optimal fit params
         'n_state'   :1,
-        't_range'   :np.arange(6,25),
+        't_range'   :np.arange(5,25),
     },
+   
     'mres-L':{
         'corr_array':False,
-        'dset_MP'   :['a15m310L_o/mp_l'],
-        'dset_PP'   :['a15m310L_o/pp_l'],
+        'dset_MP'   :['a15m130/mp_l'],
+        'dset_PP'   :['a15m130/pp_l'],
         'xlim'      :[0,64.5],
-        'ylim'      :[0.000875,0.001],
+        'ylim'      :[0.0001,0.0004],
         # optimal fit params
         't_range'   :np.arange(10,25),
     },
     'mres-S':{
         'corr_array':False,
-        'dset_MP'   :['a15m310L_o/mp_s'],
-        'dset_PP'   :['a15m310L_o/pp_s'],
+        'dset_MP'   :['a15m130/mp_s'],
+        'dset_PP'   :['a15m130/pp_s'],
         'xlim'      :[0,64.5],
-        'ylim'      :[0.00062,0.00072],
+        'ylim'      :[0,0.0003],
         # optimal fit params
         't_range'   :np.arange(13,25),
     },
 }
+    
+
 for corr in corr_lst:
     corr_lst[corr]['weights']   = [1]
     corr_lst[corr]['t_reverse'] = [False]
@@ -90,22 +93,25 @@ for corr in corr_lst:
         corr_lst[corr]['n_sweep'] = range(1,6)
 
 
+
 priors = gv.BufferDict()
 x      = dict()
-priors['omega_E_0']  = gv.gvar(1.23, .04)
-priors['omega_zS_0'] = gv.gvar(0.000655, 3e-4)
-priors['omega_zP_0'] = gv.gvar(.00575, .001)
 
-priors['pion_E_0']  = gv.gvar(0.2345, .008)
-priors['pion_zS_0'] = gv.gvar(0.0318, 2e-2)
-priors['pion_zP_0'] = gv.gvar(0.26, 10e-2)
 
-priors['kaon_E_0']  = gv.gvar(0.4047, .004)
-priors['kaon_zS_0'] = gv.gvar(0.025, 12e-3)
-priors['kaon_zP_0'] = gv.gvar(0.201, 6e-2)
+priors['omega_E_0']  = gv.gvar(1.203, .04)
+priors['omega_zS_0'] = gv.gvar(0.000464, 4e-4)
+priors['omega_zP_0'] = gv.gvar(.0105, .002)
 
-priors['mres-L']    = gv.gvar(0.0009576, 0.5e-4)
-priors['mres-S']    = gv.gvar(0.000662, 4e-5)
+priors['pion_E_0']  = gv.gvar(0.1, .04)
+priors['pion_zS_0'] = gv.gvar(0.0435, 1.2e-2)
+priors['pion_zP_0'] = gv.gvar(0.465, 10e-2)
+
+priors['kaon_E_0']  = gv.gvar(0.378, .008)
+priors['kaon_zS_0'] = gv.gvar(0.0215, 9e-3)
+priors['kaon_zP_0'] = gv.gvar(0.21, 6e-2)
+
+priors['mres-L']    = gv.gvar(0.00026, 1e-4)
+priors['mres-S']    = gv.gvar(0.00019, 7e-5)
 
 
 for corr in corr_lst:#[k for k in corr_lst if 'mres' not in k]:
@@ -146,7 +152,6 @@ for corr in corr_lst:#[k for k in corr_lst if 'mres' not in k]:
             x[state]['src']   = corr_lst[corr]['srcs'][0]
         else:
             x[state]['color'] = corr_lst[corr]['colors']
-
 
 
 
